@@ -34,7 +34,7 @@ public class WordGraph {
         //iterates through word list
         for (int i = 0; i < words.size(); i++) {
             StringBuilder sb = new StringBuilder(words.get(i));
-            // iterate though each character
+            // iterate through each character
             for (int j = 0; j < 3; j++) {
                 // iterate through each character in the alphabet swapping it with the current character. if it matches connect the nodes
                 for (int h = 0; h < alphabet.length; h++) {
