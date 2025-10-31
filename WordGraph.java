@@ -22,7 +22,6 @@ public class WordGraph {
         } catch (Exception e) {
             System.err.println("An unexpected error occurred: " + e.getMessage());
         }
-
         makeAdjancencyList();
     }
 
@@ -38,7 +37,7 @@ public class WordGraph {
                 }
             }
         }
-        search(adjancencyList);
+        search();
     }
 
     private void addToAdjacency(String word1, String word2) {
@@ -68,7 +67,9 @@ public class WordGraph {
         return totDif;
     }
 
-    public void search() {
+    public String search() {
+        String path = "";
         
+        return path;
     }
 }
