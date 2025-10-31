@@ -7,6 +7,8 @@ import java.util.Scanner;
 
 public class WordGraph {
     private ArrayList<String> words = new ArrayList<>();
+    private HashMap<String, ArrayList<String>> adjancencyList = new HashMap<>();
+
     public void main(String[] args) {
         File file = new File("threeletterwords.txt");
         
@@ -21,32 +23,52 @@ public class WordGraph {
             System.err.println("An unexpected error occurred: " + e.getMessage());
         }
 
-        makeGraph();
+        makeAdjancencyList();
     }
 
-    public void makeGraph() {   
-        HashMap<String, List<String>> adjancencyList = new HashMap<>();
-        char[] alphabet = {
-            'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm',
-            'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'
-        };
-
+    public void makeAdjancencyList() {   
         //iterates through word list
         for (int i = 0; i < words.size(); i++) {
-            StringBuilder sb = new StringBuilder(words.get(i));
-            // iterate through each character
-            for (int j = 0; j < 3; j++) {
-                // iterate through each character in the alphabet swapping it with the current character. if it matches connect the nodes
-                for (int h = 0; h < alphabet.length; h++) {
-                    sb.setCharAt(j, alphabet[h]);
-                    String word = sb.toString();
-                    for (int g = 0; g<words.size(); g++) {
-                        if (word == words.get(g)){
-                            //add to adjacency list
-                        }
-                    }
+            String word1 = words.get(i);
+            for (int j = i + 1; j < words.size(); j++){
+                String word2 = words.get(j);
+                int dif = checkWords(word1, word2);
+                if (dif == 1) {
+                    addToAdjacency(word1, word2);
                 }
-            } 
+            }
         }
+        search(adjancencyList);
+    }
+
+    private void addToAdjacency(String word1, String word2) {
+        if (!adjancencyList.containsKey(word1)) {
+            ArrayList<String> edgeList = new ArrayList<>();
+            edgeList.add(word2);
+            adjancencyList.put(word1, edgeList);
+        } else {
+            adjancencyList.get(word1).add(word2);
+        }
+        if (!adjancencyList.containsKey(word2)) {
+            ArrayList<String> edgeList = new ArrayList<>();
+            edgeList.add(word1);
+            adjancencyList.put(word2, edgeList);
+        } else {
+            adjancencyList.get(word2).add(word1);
+        }
+    }
+
+    public int checkWords(String word1, String word2) {
+        int totDif = 0;
+        for (int i = 0; i < 3 ; i++) {
+            if (word1.charAt(i) != word2.charAt(i)){
+                totDif++;
+            }
+        }
+        return totDif;
+    }
+
+    public void search() {
+        
     }
 }
