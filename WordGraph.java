@@ -36,8 +36,8 @@ public class WordGraph {
             System.err.println("An unexpected error occurred: " + e.getMessage());
         }
         
-        this.source = "aas";
-        this.target = "aba";
+        this.source = "cat";
+        this.target = "dog";
         
         makeAdjancencyList();
         BFS();
