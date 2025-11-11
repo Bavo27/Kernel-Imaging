@@ -1,7 +1,8 @@
-
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.PriorityQueue;
+import java.util.Queue;
 import java.util.Scanner;
 
 public class CannonBallGraphing {
@@ -17,7 +18,8 @@ public class CannonBallGraphing {
         Scanner sc = new Scanner(System.in);
 
         String[] source = sc.nextLine().split(" ");
-        this.sourceP = new Point(Integer.parseInt(source[0]), Integer.parseInt(source[1]));
+        this.sourceP = new Point(Double.parseDouble(source[0]), Double.parseDouble(source[1]));
+        cannons.add(sourceP);
 
         String[] target = sc.nextLine().split(" ");
         this.targetP = new Point(Integer.parseInt(target[0]), Integer.parseInt(target[1]));
@@ -30,12 +32,41 @@ public class CannonBallGraphing {
             Point cannonP = new Point(Integer.parseInt(cannon[0]), Integer.parseInt(cannon[1]));
             cannons.add(cannonP);
         }
+        cannons.add(targetP); //add at the end because if added at the anywhere else it won't work 
         cannonGraph();
         dijkstra();
     }
 
     private void dijkstra() {
+        HashMap<Point, Double> dist = new HashMap<>();
+        HashMap<Point, Point> prev = new HashMap<>();
+        Queue<Point> queueP = new PriorityQueue<Point>();
         
+        for (Point cannon : cannons) {
+            dist.put(cannon, Double.MAX_VALUE);
+        }
+        dist.put(sourceP, 0.0);
+        queueP.add(sourceP);
+
+        while (!queueP.isEmpty()) {
+            Point u = queueP.poll();
+            
+            if (u == targetP){
+                break;
+            }
+
+            for (Point neighbor : cannonGraph.get(u).keySet()) {
+                double weight = cannonGraph.get(u).get(neighbor);
+                double alt = dist.get(u) + weight;
+
+                if (alt < dist.get(neighbor)) {
+                    dist.put(u, weight);
+                    prev.put(neighbor, u);
+                    queueP.add(neighbor);
+                }
+            }
+        }
+
     }
 
     private void cannonGraph() {
@@ -62,8 +93,11 @@ public class CannonBallGraphing {
     }
 
     private double makeWeightedEdge(Point point1, Point point2) {
-        double time = 2.0;
         double dist = Point.distance(point1.getX(), point1.getY(), point2.getX(), point2.getY());
+        if (point1 == sourceP) {
+            return dist/5;
+        }
+        double time = 2.0;
         
         dist = dist - 50; 
         dist = Math.abs(dist);
