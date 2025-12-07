@@ -34,7 +34,7 @@ public class WordGraph {
             System.err.println("An unexpected error occurred: " + e.getMessage());
         }
         
-        this.source = "cat";
+        this.source = "pen";
         this.target = "dog";
         
         makeAdjancencyList();
